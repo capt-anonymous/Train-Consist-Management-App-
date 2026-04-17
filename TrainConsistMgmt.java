@@ -1,24 +1,35 @@
 public class TrainConsistMgmt {
 
-    public static boolean linearSearch(String[] bogieIds, String searchKey) {
-        for (String bogieId : bogieIds) {
-            if (bogieId.equals(searchKey)) {
+    public static boolean binarySearch(String[] bogieIds, String searchKey) {
+        int low = 0;
+        int high = bogieIds.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int comparison = searchKey.compareTo(bogieIds[mid]);
+
+            if (comparison == 0) {
                 return true;
+            } else if (comparison < 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
+
         return false;
     }
 
     public static void main(String[] args) {
-        String[] bogieIds = {"B104", "B101", "B109", "B103", "B107"};
-        String searchKey = "B103";
+        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
+        String searchKey = "B107";
 
-        boolean found = linearSearch(bogieIds, searchKey);
+        boolean found = binarySearch(bogieIds, searchKey);
 
         if (found) {
-            System.out.println("Bogie ID " + searchKey + " exists in the list.");
+            System.out.println("Bogie ID " + searchKey + " found in the sorted list.");
         } else {
-            System.out.println("Bogie ID " + searchKey + " does not exist in the list.");
+            System.out.println("Bogie ID " + searchKey + " not found in the sorted list.");
         }
     }
 }
