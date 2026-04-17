@@ -1,15 +1,16 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-class GoodsBogie {
+class Bogie {
     private String bogieId;
     private String type;
-    private String cargo;
+    private int capacity;
 
-    public GoodsBogie(String bogieId, String type, String cargo) {
+    public Bogie(String bogieId, String type, int capacity) {
         this.bogieId = bogieId;
         this.type = type;
-        this.cargo = cargo;
+        this.capacity = capacity;
     }
 
     public String getBogieId() {
@@ -20,46 +21,66 @@ class GoodsBogie {
         return type;
     }
 
-    public String getCargo() {
-        return cargo;
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
     public String toString() {
-        return "GoodsBogie{" +
+        return "Bogie{" +
                 "bogieId='" + bogieId + '\'' +
                 ", type='" + type + '\'' +
-                ", cargo='" + cargo + '\'' +
+                ", capacity=" + capacity +
                 '}';
     }
 }
 
 public class TrainConsistMgmt {
 
-    public static boolean isSafetyCompliant(List<GoodsBogie> bogies) {
+    public static List<Bogie> filterUsingLoop(List<Bogie> bogies) {
+        List<Bogie> result = new ArrayList<>();
+        for (Bogie bogie : bogies) {
+            if (bogie.getCapacity() > 60) {
+                result.add(bogie);
+            }
+        }
+        return result;
+    }
+
+    public static List<Bogie> filterUsingStream(List<Bogie> bogies) {
         return bogies.stream()
-                .allMatch(b -> {
-                    if (b.getType().equalsIgnoreCase("Cylindrical")) {
-                        return b.getCargo().equalsIgnoreCase("Petroleum");
-                    }
-                    return true;
-                });
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+    }
+
+    public static long measureLoopExecutionTime(List<Bogie> bogies) {
+        long startTime = System.nanoTime();
+        filterUsingLoop(bogies);
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+    }
+
+    public static long measureStreamExecutionTime(List<Bogie> bogies) {
+        long startTime = System.nanoTime();
+        filterUsingStream(bogies);
+        long endTime = System.nanoTime();
+        return endTime - startTime;
     }
 
     public static void main(String[] args) {
-        List<GoodsBogie> goodsBogieList = new ArrayList<>();
+        List<Bogie> bogieList = new ArrayList<>();
 
-        goodsBogieList.add(new GoodsBogie("G1", "Cylindrical", "Petroleum"));
-        goodsBogieList.add(new GoodsBogie("G2", "Box", "Coal"));
-        goodsBogieList.add(new GoodsBogie("G3", "Flat", "Steel"));
-        goodsBogieList.add(new GoodsBogie("G4", "Cylindrical", "Petroleum"));
+        bogieList.add(new Bogie("B1", "Passenger", 72));
+        bogieList.add(new Bogie("B2", "Passenger", 58));
+        bogieList.add(new Bogie("B3", "Sleeper", 65));
+        bogieList.add(new Bogie("B4", "Goods", 40));
+        bogieList.add(new Bogie("B5", "Passenger", 80));
+        bogieList.add(new Bogie("B6", "Sleeper", 55));
 
-        boolean result = isSafetyCompliant(goodsBogieList);
+        long loopTime = measureLoopExecutionTime(bogieList);
+        long streamTime = measureStreamExecutionTime(bogieList);
 
-        if (result) {
-            System.out.println("The train is safety compliant.");
-        } else {
-            System.out.println("The train is NOT safety compliant.");
-        }
+        System.out.println("Loop-based filtering time: " + loopTime + " ns");
+        System.out.println("Stream-based filtering time: " + streamTime + " ns");
     }
 }
