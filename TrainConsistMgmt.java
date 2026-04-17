@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 class Bogie {
@@ -37,10 +38,9 @@ class Bogie {
 
 public class TrainConsistMgmt {
 
-    public static List<Bogie> filterBogiesByCapacity(List<Bogie> bogies) {
+    public static Map<String, List<Bogie>> groupBogiesByType(List<Bogie> bogies) {
         return bogies.stream()
-                .filter(b -> b.getType().equalsIgnoreCase("Passenger") && b.getCapacity() > 60)
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Bogie::getType));
     }
 
     public static void main(String[] args) {
@@ -48,12 +48,15 @@ public class TrainConsistMgmt {
 
         bogieList.add(new Bogie("B1", "Passenger", 72));
         bogieList.add(new Bogie("B2", "Passenger", 58));
-        bogieList.add(new Bogie("B3", "Passenger", 65));
+        bogieList.add(new Bogie("B3", "Goods", 65));
         bogieList.add(new Bogie("B4", "Goods", 40));
+        bogieList.add(new Bogie("B5", "Sleeper", 80));
 
-        List<Bogie> filteredBogies = filterBogiesByCapacity(bogieList);
+        Map<String, List<Bogie>> groupedBogies = groupBogiesByType(bogieList);
 
-        System.out.println("Filtered Passenger Bogies with capacity > 60:");
-        filteredBogies.forEach(System.out::println);
+        System.out.println("Grouped Bogies by Type:");
+        groupedBogies.forEach((type, bogies) -> {
+            System.out.println(type + " -> " + bogies);
+        });
     }
 }
