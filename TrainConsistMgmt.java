@@ -1,19 +1,13 @@
 public class TrainConsistMgmt {
 
-    public static boolean binarySearch(String[] bogieIds, String searchKey) {
-        int low = 0;
-        int high = bogieIds.length - 1;
+    public static boolean searchBogie(String[] bogieIds, String searchKey) {
+        if (bogieIds == null || bogieIds.length == 0) {
+            throw new IllegalStateException("Search cannot be performed. No bogies are available in the train.");
+        }
 
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            int comparison = searchKey.compareTo(bogieIds[mid]);
-
-            if (comparison == 0) {
+        for (String bogieId : bogieIds) {
+            if (bogieId.equals(searchKey)) {
                 return true;
-            } else if (comparison < 0) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
             }
         }
 
@@ -21,15 +15,18 @@ public class TrainConsistMgmt {
     }
 
     public static void main(String[] args) {
-        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
-        String searchKey = "B107";
+        String[] bogieIds = {};
 
-        boolean found = binarySearch(bogieIds, searchKey);
+        try {
+            boolean found = searchBogie(bogieIds, "B101");
 
-        if (found) {
-            System.out.println("Bogie ID " + searchKey + " found in the sorted list.");
-        } else {
-            System.out.println("Bogie ID " + searchKey + " not found in the sorted list.");
+            if (found) {
+                System.out.println("Bogie found.");
+            } else {
+                System.out.println("Bogie not found.");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
