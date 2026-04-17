@@ -1,36 +1,35 @@
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TrainConsistMgmtTest {
 
     @Test
-    public void testValidPassengerBogieCreation() throws InvalidCapacityException {
-        PassengerBogie bogie = TrainConsistMgmt.createPassengerBogie("P1", "Passenger", 72);
+    public void testSafeCargoAssignment() {
+        GoodsBogie bogie = new GoodsBogie("G1", "Cylindrical");
+        bogie.assignCargo("Petroleum");
 
-        assertEquals("P1", bogie.getBogieId());
-        assertEquals("Passenger", bogie.getType());
-        assertEquals(72, bogie.getCapacity());
+        assertEquals("Petroleum", bogie.getCargo());
     }
 
     @Test
-    public void testInvalidPassengerBogieCreation() {
-        InvalidCapacityException exception = assertThrows(
-                InvalidCapacityException.class,
-                () -> TrainConsistMgmt.createPassengerBogie("P2", "Passenger", 0)
-        );
+    public void testUnsafeCargoAssignment() {
+        GoodsBogie bogie = new GoodsBogie("G2", "Rectangular");
+        bogie.assignCargo("Petroleum");
 
-        assertEquals("Invalid capacity: Capacity must be greater than 0", exception.getMessage());
+        assertNull(bogie.getCargo());
     }
 
     @Test
-    public void testNegativeCapacityPassengerBogieCreation() {
-        InvalidCapacityException exception = assertThrows(
-                InvalidCapacityException.class,
-                () -> TrainConsistMgmt.createPassengerBogie("P3", "Passenger", -10)
-        );
+    public void testApplicationContinuesAfterFailure() {
+        GoodsBogie bogie1 = new GoodsBogie("G1", "Rectangular");
+        bogie1.assignCargo("Petroleum");
 
-        assertEquals("Invalid capacity: Capacity must be greater than 0", exception.getMessage());
+        GoodsBogie bogie2 = new GoodsBogie("G2", "Cylindrical");
+        bogie2.assignCargo("Coal");
+
+        assertNull(bogie1.getCargo());
+        assertEquals("Coal", bogie2.getCargo());
     }
 }
