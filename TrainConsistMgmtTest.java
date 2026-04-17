@@ -1,44 +1,36 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TrainConsistMgmtTest {
 
     @Test
-    public void testLoopAndStreamReturnSameCount() {
-        List<Bogie> bogieList = new ArrayList<>();
+    public void testValidPassengerBogieCreation() throws InvalidCapacityException {
+        PassengerBogie bogie = TrainConsistMgmt.createPassengerBogie("P1", "Passenger", 72);
 
-        bogieList.add(new Bogie("B1", "Passenger", 72));
-        bogieList.add(new Bogie("B2", "Passenger", 58));
-        bogieList.add(new Bogie("B3", "Sleeper", 65));
-        bogieList.add(new Bogie("B4", "Goods", 40));
-        bogieList.add(new Bogie("B5", "Passenger", 80));
-
-        List<Bogie> loopResult = TrainConsistMgmt.filterUsingLoop(bogieList);
-        List<Bogie> streamResult = TrainConsistMgmt.filterUsingStream(bogieList);
-
-        assertEquals(loopResult.size(), streamResult.size());
-        assertEquals(3, loopResult.size());
+        assertEquals("P1", bogie.getBogieId());
+        assertEquals("Passenger", bogie.getType());
+        assertEquals(72, bogie.getCapacity());
     }
 
     @Test
-    public void testExecutionTimeIsMeasured() {
-        List<Bogie> bogieList = new ArrayList<>();
+    public void testInvalidPassengerBogieCreation() {
+        InvalidCapacityException exception = assertThrows(
+                InvalidCapacityException.class,
+                () -> TrainConsistMgmt.createPassengerBogie("P2", "Passenger", 0)
+        );
 
-        bogieList.add(new Bogie("B1", "Passenger", 72));
-        bogieList.add(new Bogie("B2", "Passenger", 58));
-        bogieList.add(new Bogie("B3", "Sleeper", 65));
-        bogieList.add(new Bogie("B4", "Goods", 40));
-        bogieList.add(new Bogie("B5", "Passenger", 80));
+        assertEquals("Invalid capacity: Capacity must be greater than 0", exception.getMessage());
+    }
 
-        long loopTime = TrainConsistMgmt.measureLoopExecutionTime(bogieList);
-        long streamTime = TrainConsistMgmt.measureStreamExecutionTime(bogieList);
+    @Test
+    public void testNegativeCapacityPassengerBogieCreation() {
+        InvalidCapacityException exception = assertThrows(
+                InvalidCapacityException.class,
+                () -> TrainConsistMgmt.createPassengerBogie("P3", "Passenger", -10)
+        );
 
-        assertTrue(loopTime >= 0);
-        assertTrue(streamTime >= 0);
+        assertEquals("Invalid capacity: Capacity must be greater than 0", exception.getMessage());
     }
 }
