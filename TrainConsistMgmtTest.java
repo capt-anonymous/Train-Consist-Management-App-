@@ -7,27 +7,36 @@ public class TrainConsistMgmtTest {
 
     @Test
     public void testBogieIdFound() {
-        String[] bogieIds = {"B104", "B101", "B109", "B103", "B107"};
+        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
 
-        boolean result = TrainConsistMgmt.linearSearch(bogieIds, "B103");
+        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B107");
 
         assertTrue(result);
     }
 
     @Test
     public void testBogieIdNotFound() {
-        String[] bogieIds = {"B104", "B101", "B109", "B103", "B107"};
+        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
 
-        boolean result = TrainConsistMgmt.linearSearch(bogieIds, "B999");
+        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B999");
 
         assertFalse(result);
     }
 
     @Test
     public void testSearchFirstElement() {
-        String[] bogieIds = {"B104", "B101", "B109", "B103", "B107"};
+        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
 
-        boolean result = TrainConsistMgmt.linearSearch(bogieIds, "B104");
+        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B101");
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testSearchLastElement() {
+        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
+
+        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B109");
 
         assertTrue(result);
     }
