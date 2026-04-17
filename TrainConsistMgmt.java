@@ -1,22 +1,24 @@
-import java.util.Arrays;
-
 public class TrainConsistMgmt {
-    /**
-     * UC 17: Sort bogie type names alphabetically using Java's built-in Arrays.sort() method.
-     */
-    public static void sortBogieTypes(String[] types) {
-        Arrays.sort(types);
+
+    public static boolean linearSearch(String[] bogieIds, String searchKey) {
+        for (String bogieId : bogieIds) {
+            if (bogieId.equals(searchKey)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
-        String[] bogieTypes = {"Passenger", "Goods", "Sleeper", "Pantry", "Engines"};
-        
-        System.out.println("Original bogie types:");
-        System.out.println(Arrays.toString(bogieTypes));
+        String[] bogieIds = {"B104", "B101", "B109", "B103", "B107"};
+        String searchKey = "B103";
 
-        sortBogieTypes(bogieTypes);
+        boolean found = linearSearch(bogieIds, searchKey);
 
-        System.out.println("Sorted bogie types (Alphabetical):");
-        System.out.println(Arrays.toString(bogieTypes));
+        if (found) {
+            System.out.println("Bogie ID " + searchKey + " exists in the list.");
+        } else {
+            System.out.println("Bogie ID " + searchKey + " does not exist in the list.");
+        }
     }
 }
