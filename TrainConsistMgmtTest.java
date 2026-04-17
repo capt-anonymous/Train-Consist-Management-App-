@@ -1,31 +1,36 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrainConsistMgmtTest {
 
     @Test
-    public void testValidTrainId() {
-        assertTrue(TrainConsistMgmt.isValidTrainId("TRN-1234"));
+    public void testSafetyCompliantTrain() {
+        List<GoodsBogie> bogieList = new ArrayList<>();
+
+        bogieList.add(new GoodsBogie("G1", "Cylindrical", "Petroleum"));
+        bogieList.add(new GoodsBogie("G2", "Box", "Coal"));
+        bogieList.add(new GoodsBogie("G3", "Flat", "Steel"));
+
+        boolean result = TrainConsistMgmt.isSafetyCompliant(bogieList);
+
+        assertTrue(result);
     }
 
     @Test
-    public void testInvalidTrainId() {
-        assertFalse(TrainConsistMgmt.isValidTrainId("TRN1234"));
-        assertFalse(TrainConsistMgmt.isValidTrainId("TRN-12"));
-        assertFalse(TrainConsistMgmt.isValidTrainId("ABC-1234"));
-    }
+    public void testNonSafetyCompliantTrain() {
+        List<GoodsBogie> bogieList = new ArrayList<>();
 
-    @Test
-    public void testValidCargoCode() {
-        assertTrue(TrainConsistMgmt.isValidCargoCode("PET-AB"));
-    }
+        bogieList.add(new GoodsBogie("G1", "Cylindrical", "Petroleum"));
+        bogieList.add(new GoodsBogie("G2", "Cylindrical", "Water"));
+        bogieList.add(new GoodsBogie("G3", "Box", "Coal"));
 
-    @Test
-    public void testInvalidCargoCode() {
-        assertFalse(TrainConsistMgmt.isValidCargoCode("PET-ab"));
-        assertFalse(TrainConsistMgmt.isValidCargoCode("PET-123"));
-        assertFalse(TrainConsistMgmt.isValidCargoCode("CARGO-AB"));
+        boolean result = TrainConsistMgmt.isSafetyCompliant(bogieList);
+
+        assertFalse(result);
     }
 }
