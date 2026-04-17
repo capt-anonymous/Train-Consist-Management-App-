@@ -1,30 +1,22 @@
 import java.util.Arrays;
 
 public class TrainConsistMgmt {
-
-    public static void bubbleSort(int[] capacities) {
-        int n = capacities.length;
-
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - 1 - i; j++) {
-                if (capacities[j] > capacities[j + 1]) {
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
-            }
-        }
+    /**
+     * UC 17: Sort bogie type names alphabetically using Java's built-in Arrays.sort() method.
+     */
+    public static void sortBogieTypes(String[] types) {
+        Arrays.sort(types);
     }
 
     public static void main(String[] args) {
-        int[] capacities = {72, 58, 65, 40, 80, 55};
+        String[] bogieTypes = {"Passenger", "Goods", "Sleeper", "Pantry", "Engines"};
+        
+        System.out.println("Original bogie types:");
+        System.out.println(Arrays.toString(bogieTypes));
 
-        System.out.println("Original capacities:");
-        System.out.println(Arrays.toString(capacities));
+        sortBogieTypes(bogieTypes);
 
-        bubbleSort(capacities);
-
-        System.out.println("Sorted capacities:");
-        System.out.println(Arrays.toString(capacities));
+        System.out.println("Sorted bogie types (Alphabetical):");
+        System.out.println(Arrays.toString(bogieTypes));
     }
 }
