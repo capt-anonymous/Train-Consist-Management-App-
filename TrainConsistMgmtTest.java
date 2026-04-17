@@ -1,43 +1,38 @@
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrainConsistMgmtTest {
 
     @Test
-    public void testBogieIdFound() {
-        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
+    public void testSearchBogieFound() {
+        String[] bogieIds = {"B101", "B103", "B105"};
 
-        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B107");
+        boolean result = TrainConsistMgmt.searchBogie(bogieIds, "B103");
 
         assertTrue(result);
     }
 
     @Test
-    public void testBogieIdNotFound() {
-        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
+    public void testSearchBogieNotFound() {
+        String[] bogieIds = {"B101", "B103", "B105"};
 
-        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B999");
+        boolean result = TrainConsistMgmt.searchBogie(bogieIds, "B999");
 
         assertFalse(result);
     }
 
     @Test
-    public void testSearchFirstElement() {
-        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
+    public void testSearchOnEmptyTrain() {
+        String[] bogieIds = {};
 
-        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B101");
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> TrainConsistMgmt.searchBogie(bogieIds, "B101")
+        );
 
-        assertTrue(result);
-    }
-
-    @Test
-    public void testSearchLastElement() {
-        String[] bogieIds = {"B101", "B103", "B104", "B107", "B109"};
-
-        boolean result = TrainConsistMgmt.binarySearch(bogieIds, "B109");
-
-        assertTrue(result);
+        assertTrue(exception.getMessage().contains("No bogies are available in the train"));
     }
 }
