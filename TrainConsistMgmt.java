@@ -1,57 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
-
-class Bogie {
-    private String bogieId;
-    private String type;
-    private int capacity;
-
-    public Bogie(String bogieId, String type, int capacity) {
-        this.bogieId = bogieId;
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    public String getBogieId() {
-        return bogieId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    @Override
-    public String toString() {
-        return "Bogie{" +
-                "bogieId='" + bogieId + '\'' +
-                ", type='" + type + '\'' +
-                ", capacity=" + capacity +
-                '}';
-    }
-}
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrainConsistMgmt {
 
-    public static int getTotalSeatingCapacity(List<Bogie> bogies) {
-        return bogies.stream()
-                .map(Bogie::getCapacity)
-                .reduce(0, Integer::sum);
+    public static boolean isValidTrainId(String trainId) {
+        Pattern trainPattern = Pattern.compile("TRN-\\d{4}");
+        Matcher matcher = trainPattern.matcher(trainId);
+        return matcher.matches();
+    }
+
+    public static boolean isValidCargoCode(String cargoCode) {
+        Pattern cargoPattern = Pattern.compile("PET-[A-Z]{2}");
+        Matcher matcher = cargoPattern.matcher(cargoCode);
+        return matcher.matches();
     }
 
     public static void main(String[] args) {
-        List<Bogie> bogieList = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
-        bogieList.add(new Bogie("B1", "Passenger", 72));
-        bogieList.add(new Bogie("B2", "Passenger", 58));
-        bogieList.add(new Bogie("B3", "Sleeper", 65));
-        bogieList.add(new Bogie("B4", "Goods", 40));
+        System.out.print("Enter Train ID: ");
+        String trainId = scanner.nextLine();
 
-        int totalCapacity = getTotalSeatingCapacity(bogieList);
+        System.out.print("Enter Cargo Code: ");
+        String cargoCode = scanner.nextLine();
 
-        System.out.println("Total Seating Capacity: " + totalCapacity);
+        if (isValidTrainId(trainId)) {
+            System.out.println("Valid Train ID");
+        } else {
+            System.out.println("Invalid Train ID");
+        }
+
+        if (isValidCargoCode(cargoCode)) {
+            System.out.println("Valid Cargo Code");
+        } else {
+            System.out.println("Invalid Cargo Code");
+        }
+
+        scanner.close();
     }
 }
