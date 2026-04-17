@@ -1,35 +1,36 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class TrainConsistMgmtTest {
 
     @Test
-    public void testSafeCargoAssignment() {
-        GoodsBogie bogie = new GoodsBogie("G1", "Cylindrical");
-        bogie.assignCargo("Petroleum");
+    public void testBubbleSortWithUnsortedArray() {
+        int[] capacities = {72, 58, 65, 40, 80, 55};
+        int[] expected = {40, 55, 58, 65, 72, 80};
 
-        assertEquals("Petroleum", bogie.getCargo());
+        TrainConsistMgmt.bubbleSort(capacities);
+
+        assertArrayEquals(expected, capacities);
     }
 
     @Test
-    public void testUnsafeCargoAssignment() {
-        GoodsBogie bogie = new GoodsBogie("G2", "Rectangular");
-        bogie.assignCargo("Petroleum");
+    public void testBubbleSortWithAlreadySortedArray() {
+        int[] capacities = {10, 20, 30, 40};
+        int[] expected = {10, 20, 30, 40};
 
-        assertNull(bogie.getCargo());
+        TrainConsistMgmt.bubbleSort(capacities);
+
+        assertArrayEquals(expected, capacities);
     }
 
     @Test
-    public void testApplicationContinuesAfterFailure() {
-        GoodsBogie bogie1 = new GoodsBogie("G1", "Rectangular");
-        bogie1.assignCargo("Petroleum");
+    public void testBubbleSortWithSingleElement() {
+        int[] capacities = {50};
+        int[] expected = {50};
 
-        GoodsBogie bogie2 = new GoodsBogie("G2", "Cylindrical");
-        bogie2.assignCargo("Coal");
+        TrainConsistMgmt.bubbleSort(capacities);
 
-        assertNull(bogie1.getCargo());
-        assertEquals("Coal", bogie2.getCargo());
+        assertArrayEquals(expected, capacities);
     }
 }
